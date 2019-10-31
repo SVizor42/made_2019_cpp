@@ -11,64 +11,60 @@ void remove_spaces(std::string& str)
 // get numbers
 int number(std::string& str_dec) {
 	std::string::size_type sz;
-	try {
-		int i_dec = std::stoi(str_dec, &sz);
-		str_dec = str_dec.substr(sz);
-		return i_dec;
-	} 
-	catch (const std::invalid_argument& ia) {
-        throw std::invalid_argument("Incorrect equation");
-    }
+
+	int i_dec = std::stoi(str_dec, &sz);
+	str_dec = str_dec.substr(sz);
+	return i_dec;
 }
 
 // MUL & DIV
 double term(std::string& input) {
-    double left = number(input);
+	double left = number(input);
     
-    while (!input.empty()) {
-        switch (input.at(0)) {
-            case '/':
-                input = input.substr(1);
-                if (int divisor = number(input))  {
-		    		left /= divisor; 
-                }
+	while (!input.empty()) {
+		switch (input.at(0)) {
+			case '/':
+				input = input.substr(1);
+				if (int divisor = number(input))  {
+					left /= divisor; 
+				}
 				else {
 					throw std::invalid_argument("Division by zero");
 				}
-                break;
-            case '*':
-                input = input.substr(1);
-                left *= number(input);
-                break;
-            default:
-                return left;
-        }
-    }
+				break;
+			case '*':
+				input = input.substr(1);
+				left *= number(input);
+				break;
+			default:
+				return left;
+ 		}
+	}
 }
 
 // ADD & SUB
 double expr(std::string& input) {
-    double left = term(input);
+	double left = term(input);
     
-    while (!input.empty()) {
-        switch (input.at(0)) {
-            case '+':
-                input = input.substr(1);
-                left += term(input);
-                break;
-            case '-':
-                input = input.substr(1);
-                left -= term(input);
-                break;
-            default:
-                throw std::invalid_argument("Only [+][-][*][/] operations available");
-        }
-    }
-    return left;
+	while (!input.empty()) {
+		switch (input.at(0)) {
+			case '+':
+				input = input.substr(1);
+				left += term(input);
+				break;
+			case '-':
+				input = input.substr(1);
+				left -= term(input);
+				break;
+			default:
+				throw std::invalid_argument("Only [+][-][*][/] operations available");
+		}
+	}
+	return left;
 }
 
 double processing(const std::string& str) {
 	std::string input = str;
-    remove_spaces(input);
-    return expr(input);
+	remove_spaces(input);
+	return expr(input);
 };
