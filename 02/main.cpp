@@ -14,11 +14,11 @@ int main(int argc, const char* argv[])
 	char* ptr2 = allocator.alloc(3);
 	assert(ptr2 != nullptr);
 
-    ptr1 = allocator.alloc(5);
+	ptr1 = allocator.alloc(5);
 	assert(ptr1 == nullptr);
 
 	allocator.reset();
-    ptr2 = allocator.alloc(5);
+ 	ptr2 = allocator.alloc(5);
 	assert(ptr2 != nullptr);
 	
 	std::cout << "All tests were passed!" << std::endl;
