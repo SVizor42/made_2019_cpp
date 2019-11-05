@@ -3,7 +3,7 @@
 LinearAllocator::LinearAllocator(size_t maxSize){
 	maxSize_ = maxSize;
 	offset = 0;
-	base = new char(maxSize);
+	base = new char[maxSize];
 }
 
 char* LinearAllocator::alloc(size_t size) {
