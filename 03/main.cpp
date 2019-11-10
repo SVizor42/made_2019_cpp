@@ -33,7 +33,9 @@ int main(int argc, const char* argv[])
 	parser.registerNumFunc(makeNegative);
 	parser.registerNumFunc(incInt);
 	parser.registerStrFunc(getStrSize);
-	parser.Parse("  The 1    string to check	!");
-	parser.Parse("Here is\nthe 2389 22	");
+	std::string str = "  The 1    string to check	!";
+	parser.Parse(str);
+	str = "Here is\nthe 2389 22	";
+	parser.Parse(str);
 	return 0;
 }
