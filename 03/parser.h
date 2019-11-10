@@ -4,6 +4,7 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
+#include <string>
 
 typedef std::function<void()> onBeginCallback;
 typedef std::function<void(const std::string& str)> onEndCallback;
@@ -12,11 +13,11 @@ typedef std::function<void(const std::string& str)> onStringCallback;
 
 class Parser {
 public:
-	std::string Parse(std::string input);
-	void registerNumFunc(onNumberCallback func);
-	void registerStrFunc(onStringCallback func);
-	void setBeginFunc(onBeginCallback func);
-	void setEndFunc(onEndCallback func);
+	void Parse(std::string& input);
+	void registerNumFunc(const onNumberCallback& func);
+	void registerStrFunc(const onStringCallback& func);
+	void setBeginFunc(const onBeginCallback& func);
+	void setEndFunc(const onEndCallback& func);
 	
 private:
 	onBeginCallback beginFunction;
