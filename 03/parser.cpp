@@ -12,10 +12,12 @@ void rtrim(std::string& str) {
 	}).base(), str.end());
 }
 
-std::string Parser::Parse(std::string input) {
-	beginFunction();
+void Parser::Parse(std::string& input) {
+	if (beginFunction != nullptr) {
+		beginFunction();
+	}
 
-    rtrim(input);
+	rtrim(input);
 
 	std::string output = "";
 	std::string delimiter = " \t\n";
@@ -36,30 +38,32 @@ std::string Parser::Parse(std::string input) {
 			}
 			output += (token + '\n');
 		}
-		input.erase(0, pos + 1);
+		input = input.substr(pos + 1);
 	}
 	for (auto& func : stringFunction) {
 		func(input);
 	}
 	output += input;
 
-	endFunction(output);
-	
-	return output;
+	if (endFunction != nullptr) {
+		endFunction(output);
+	}
+
+	input = output;
 }
 
-void Parser::setBeginFunc(onBeginCallback func) {
+void Parser::setBeginFunc(const onBeginCallback& func) {
 	 beginFunction = func;
 }
 
-void Parser::setEndFunc(onEndCallback func) {
+void Parser::setEndFunc(const onEndCallback& func) {
 	 endFunction = func;
 }
 
-void Parser::registerNumFunc(onNumberCallback func) {
+void Parser::registerNumFunc(const onNumberCallback& func) {
 	numberFunction.push_back(func);
 }
 
-void Parser::registerStrFunc(onStringCallback func) {
+void Parser::registerStrFunc(const onStringCallback& func) {
 	stringFunction.push_back(func);
 }
