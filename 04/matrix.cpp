@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 int& Matrix::Proxy::operator[](const size_t index) {
-	if ((index < 0) || (index >= row_.size())) {
+	if (index >= row_.size()) {
 		throw std::out_of_range("Column index is out of range!");
 	}
 	else {
@@ -10,8 +10,17 @@ int& Matrix::Proxy::operator[](const size_t index) {
 	}
 }
 
-Matrix::Matrix(size_t rows, size_t cols) {
-	data_.assign(rows, std::vector<int> (cols));
+const int Matrix::Proxy::operator[](const size_t index) const {
+	if (index >= row_.size()) {
+		throw std::out_of_range("Column index is out of range!");
+	}
+	else {
+		return row_[index];
+	}
+}
+
+size_t Matrix::Proxy::getSize() const {
+	return row_.size();
 }
 
 size_t Matrix::getRows() const {
@@ -19,19 +28,28 @@ size_t Matrix::getRows() const {
 }
 
 size_t Matrix::getColumns() const {
-	return data_[0].size();
+	return data_[0].getSize();
 }
 
-Matrix::Proxy Matrix::operator[](const size_t index) {
-	if ((index < 0) || (index >= data_.size())) {
+Matrix::Proxy& Matrix::operator[](const size_t index) {
+	if (index >= data_.size()) {
 		throw std::out_of_range("Row index is out of range!");
 	}
 	else {
-		return Proxy(data_[index]);
+		return data_[index];
 	}
 }
 
-void Matrix::operator*=(const int value) {
+const Matrix::Proxy& Matrix::operator[](const size_t index) const {
+	if (index >= data_.size()) {
+		throw std::out_of_range("Row index is out of range!");
+	}
+	else {
+		return data_[index];
+	}
+}
+
+Matrix& Matrix::operator*=(const int value) {
 	for (size_t i = 0; i < getRows(); i++)
 		for (size_t j = 0; j < getColumns(); j++) {
 			data_[i][j] *= value;
