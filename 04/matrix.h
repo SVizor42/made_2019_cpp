@@ -8,23 +8,26 @@ class Matrix {
 public:
 	class Proxy {
 	public:
-		Proxy(std::vector<int>& row) : row_(row) {};
+		Proxy(std::vector<int> row) : row_(row) {};
 		int& operator[](const size_t index);
+		const int operator[](const size_t index) const;
+		size_t getSize() const;
 
 	private:
-		std::vector<int>& row_;
+		std::vector<int> row_;
 	};
 
-	Matrix(size_t rows, size_t cols);
+	Matrix(size_t rows, size_t cols) : data_(rows, Proxy(std::vector<int> (cols))) {};
 	size_t getRows() const;
 	size_t getColumns() const;
-	Proxy operator[](const size_t index);
-	void operator*=(const int value);
+	Proxy& operator[](const size_t index);
+	const Proxy& operator[](const size_t index) const;
+	Matrix& operator*=(const int value);
 	bool operator==(const Matrix& other) const;
 	bool operator!=(const Matrix& other) const;
-
+	
 private:
-	std::vector< std::vector<int> > data_;
+	std::vector<Proxy> data_;
 };
 
 #endif
