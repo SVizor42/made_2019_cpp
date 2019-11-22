@@ -19,7 +19,7 @@ public:
     }
 
     template <class... ArgsT>
-    Error operator()(ArgsT&... args) {
+    Error operator()(ArgsT... args) {
         return process(args...);
     }
     
@@ -111,7 +111,7 @@ private:
             return Error::CorruptedArchive;
             
         for (int i = 0; i < text.size(); i++)
-            if (!isdigit)
+            if (!isdigit(text[i]))
                 return Error::CorruptedArchive;
                 
         value = std::stoull(text);
