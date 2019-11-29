@@ -27,12 +27,12 @@ private:
     std::ostream& out_;
     
     template <class T>
-    Error process(T& value) {
+    Error process(T value) {
         return value.serialize(*this);
     }
     
-    template <class T, class... Args>
-    Error process(T& value, Args&... args) {
+    template <class T, class... ArgsT>
+    Error process(T value, ArgsT... args) {
         if (process(value) == Error::CorruptedArchive)
             return Error::CorruptedArchive;
         else {
