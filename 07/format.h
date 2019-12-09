@@ -6,6 +6,12 @@
 #include <sstream>
 #include <vector>
 
+enum OpType {
+	CLOSE,
+	OPEN,
+	READ
+};
+
 template <class T>
 std::string covert_to_str(T&& arg) {
 	std::ostringstream ostream;
@@ -18,29 +24,30 @@ std::string format(const std::string& input, TArgs&&... args) {
 	std::vector<std::string> func_args = { covert_to_str(std::forward<TArgs>(args))... };
 
 	std::string output = "";
-	int operation = 0, i = 0;
+	OpType operation = CLOSE; 
+	int i = 0;
 	while (i < input.size()) {
-		if (input[i] == '}') {
-			if (operation == 2) {
-				operation = 0;
-				i++;
-			}
-			else {
-				throw std::runtime_error("'}' without '{' or empty argument!");
-			}
-		}
-		else {
-			if (input[i] == '{') {
-				if (!operation) {
-					operation = 1;
+		switch(input[i]) {
+			case '}':
+				if (operation == READ) {
+					operation = CLOSE;
+					i++;
+				}
+				else {
+					throw std::runtime_error("'}' without '{' or empty argument!");
+				}
+				break;
+			case '{':
+				if (operation == CLOSE) {
+					operation = OPEN;
 					i++;
 				}
 				else {
 					throw std::runtime_error("'}' without '{' or valid argument!");
 				}
-			}
-			else {
-				if (operation == 1) {
+				break;
+			default:	
+				if (operation == OPEN) {
 					std::string arg = "";
 					while (input[i] != '}' && i < input.size()) {
 						arg += input[i];
@@ -54,22 +61,20 @@ std::string format(const std::string& input, TArgs&&... args) {
 							if (!isdigit(arg[j]))
 								throw std::runtime_error("Invalid argument!");
 						size_t index = stoi(arg);
-						if (index >= func_args.size()) {
+						if (index >= func_args.size())
 							throw std::runtime_error("Specified argument doesn't exist!");
-						}
 						output += func_args[index];
-						operation = 2;
+						operation = READ;
 					}
 				}
 				else {
 					output += input[i];
 					i++;
-				}
-			}		
+				}						
 		}
 	}
 	
-	if (operation) {
+	if (operation != CLOSE) {
 		throw std::runtime_error("Incorrect bracket sequence!");
 	}
 
