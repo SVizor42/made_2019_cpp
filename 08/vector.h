@@ -296,7 +296,7 @@ public:
 		return reverse_iterator(begin());
 	}
 
-    template<class... Args>
+	template<class... Args>
 	void resize(size_type new_size, Args... args) {
 		if (new_size != capacity_) {
 			reserve(new_size);
