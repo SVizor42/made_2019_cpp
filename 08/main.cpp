@@ -3,7 +3,7 @@
 #include "vector.h"
 
 template<class T>
-void print_vector(Vector<T>& v) {
+void print_vector(const Vector<T>& v) {
 	std::cout << "current_size = " << v.size() << std::endl;
 	std::cout << "items:" << std::endl;
 	for (auto it = v.begin(); it != v.end(); ++it) {
