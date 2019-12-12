@@ -241,7 +241,7 @@ public:
 			reserve(2 * capacity_);
 		}
 		
-		alloc_.construct(data_ + size_, std::forward<value_type>(value));
+		alloc_.construct(data_ + size_, std::move(value));
 		size_++;
 	}
 
@@ -280,19 +280,19 @@ public:
 		size_ = 0;		
 	}
 
-	iterator begin() noexcept {
+	iterator begin() const noexcept {
 		return iterator(data_);
 	};
 
-	iterator end() noexcept {
+	iterator end() const noexcept {
 		return iterator(data_ + size_);		
 	}
 
-	reverse_iterator rbegin() noexcept {
+	reverse_iterator rbegin() const noexcept {
 		return reverse_iterator(end());
 	}
 
-	reverse_iterator rend() noexcept {
+	reverse_iterator rend() const noexcept {
 		return reverse_iterator(begin());
 	}
 
